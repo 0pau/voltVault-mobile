@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="?activeBackground"/>
+            <corners android:radius="15dp"/>
+        </shape>
+    </item>
+    <item>
+        <ripple xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:color="#25000000">
+            <item android:id="@android:id/mask">
+                <shape android:shape="rectangle">
+                    <solid android:color="#2797e0" />
+                    <corners android:radius="15dp"/>
+                </shape>
+            </item>
+        </ripple>
+    </item>
+</layer-list>

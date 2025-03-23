@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "384515329726",
+    "project_id": "volt-vault-8add5",
+    "storage_bucket": "volt-vault-8add5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384515329726:android:9891e9138243bf971398ef",
+        "android_client_info": {
+          "package_name": "hu.opau.voltvault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384515329726-1cvqj2110b0hndlvk2lp085h7lg2i294.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.opau.voltvault",
+            "certificate_hash": "60ef0e803dbdc8473e84e286995c67abd79f2351"
+          }
+        },
+        {
+          "client_id": "384515329726-fhcog50q9fsr4fcj1p7gvsh06qheaooa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0RZYcsgrIZDVZfQumcyizw9Zt59UCHWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384515329726-fhcog50q9fsr4fcj1p7gvsh06qheaooa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

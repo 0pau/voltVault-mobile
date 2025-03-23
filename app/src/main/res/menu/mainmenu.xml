@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/mono"
+        android:title="Kezdőlap"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/favorite_fill_24px"
+        android:title="Kedvencek"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/shopping_basket_24px"
+        android:title="Kosár"
+        app:showAsAction="always" />
+    <item
+        android:icon="@drawable/account_circle_24px"
+        android:title="Fiókom"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="textColorPrimary">#000000</attr>
+    <attr name="activeBackground">#FFFFFF</attr>
+    <attr name="windowBackground">#F0F0F0</attr>
+    <attr name="disabledText">#999999</attr>
+    <attr name="accentTransparent">#999999</attr>
+    <attr name="borders">#d9d9d9</attr>
+    <attr name="ok" />
+    <attr name="ok_transparent" />
+</resources>
