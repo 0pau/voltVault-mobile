@@ -1,5 +1,8 @@
 package hu.opau.voltvault.fragments;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -25,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Date;
 import java.util.List;
 
+import hu.opau.voltvault.FirestoreBatchExecutor;
 import hu.opau.voltvault.ProductViewActivity;
 import hu.opau.voltvault.R;
 import hu.opau.voltvault.Utils;
@@ -98,7 +102,8 @@ public class HomeScreen extends Fragment {
     }
 
     public void refresh() {
-        ProductController.getInstance().query(5, 1, new Condition[]{}).addOnCompleteListener(e->{
+        FirestoreBatchExecutor executor = new FirestoreBatchExecutor();
+        executor.add(ProductController.getInstance().query(5, 1, new Condition[]{}), e -> {
             List<Product> data = e.getResult().toObjects(Product.class);
             LinearLayoutManager lman = new LinearLayoutManager(getContext());
             lman.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -106,6 +111,10 @@ public class HomeScreen extends Fragment {
             ((RecyclerView)layout.findViewById(R.id.newProductsRecycler)).setAdapter(
                     new ProductAdapter(data)
             );
+        }).runBatch(FirestoreBatchExecutor.RunOptions.ABORT_ON_ERROR);
+        executor.setOnFirestoreBatchCompleteListener(() -> {
+            layout.findViewById(R.id.progressBar3).setVisibility(GONE);
+            layout.findViewById(R.id.scrollView2).setVisibility(VISIBLE);
         });
     }
 

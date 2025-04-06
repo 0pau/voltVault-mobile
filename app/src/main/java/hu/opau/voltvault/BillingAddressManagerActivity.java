@@ -49,6 +49,9 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
         adapter.setOnItemSelectedListener(index->{
             showEditSheet(adapter.data.get(index), false);
         });
+        adapter.setOnItemRemovedListener(()->{
+            listModified = true;
+        });
 
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
@@ -157,6 +160,7 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
     public static class BillingAddressAdapter extends RecyclerView.Adapter<BillingAddressAdapter.ViewHolder> {
         private List<BillingAddress> data = new ArrayList<>();
         private OnItemSelectedListener onItemSelectedListener;
+        private OnItemRemovedListener onItemRemovedListener;
 
         @NonNull
         @Override
@@ -183,6 +187,9 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
                 PopupMenu p = new PopupMenu(holder.itemView.getContext(), holder.itemView);
                 p.getMenu().add("Törlés");
                 p.getMenu().getItem(0).setOnMenuItemClickListener(i->{
+                    if (onItemRemovedListener != null) {
+                        onItemRemovedListener.onEvent();
+                    }
                     data.remove(position);
                     notifyItemRemoved(position);
                     return true;
@@ -224,8 +231,16 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
             void onEvent(int index);
         }
 
+        public interface OnItemRemovedListener {
+            void onEvent();
+        }
+
         public void setOnItemSelectedListener(OnItemSelectedListener onItemSelectedListener) {
             this.onItemSelectedListener = onItemSelectedListener;
+        }
+
+        public void setOnItemRemovedListener(OnItemRemovedListener onItemRemovedListener) {
+            this.onItemRemovedListener = onItemRemovedListener;
         }
     }
 }

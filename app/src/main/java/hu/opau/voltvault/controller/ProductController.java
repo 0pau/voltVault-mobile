@@ -33,19 +33,19 @@ public class ProductController {
         return productController;
     }
 
-    public Task<QuerySnapshot> query() {
+    public Query query() {
         return query(25, 1, null);
     }
 
-    public Task<QuerySnapshot> query(Integer limit) {
+    public Query query(Integer limit) {
         return query(limit, 1, null);
     }
 
-    public Task<QuerySnapshot> query(Integer limit, Integer page) {
+    public Query query(Integer limit, Integer page) {
         return query(limit, page, null);
     }
 
-    public Task<QuerySnapshot> query(Integer limit, Integer page, Condition[] query) {
+    public Query query(Integer limit, Integer page, Condition[] query) {
 
         var qs = firestore.collection("products");
         Query q = qs.limit(25);
@@ -82,7 +82,7 @@ public class ProductController {
                 }
             }
         }
-        return q.get();
+        return q;
 
     }
 }

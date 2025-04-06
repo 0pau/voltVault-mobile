@@ -2,16 +2,23 @@ package hu.opau.voltvault.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 import hu.opau.voltvault.R;
+import hu.opau.voltvault.models.Product;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +28,7 @@ import hu.opau.voltvault.R;
 public class FavoritesFragment extends Fragment {
 
     private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
     private View layout;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -85,7 +93,49 @@ public class FavoritesFragment extends Fragment {
         int s = View.GONE;
         if (auth.getCurrentUser() == null) {
             s = View.VISIBLE;
+            loadFavorites();
         }
         layout.findViewById(R.id.favoriteHint).setVisibility(s);
     }
+
+    private void loadFavorites() {
+        firestore.collection("userFavorites").document(auth.getUid()).get().addOnCompleteListener(e->{
+            Log.i("XD", "HEHE");
+            List<String> d = (List<String>) e.getResult().get("list");
+            Log.i("XD", d.size()+"");
+        });
+    }
+
+    public static class FavoriteProductAdapter extends RecyclerView.Adapter<FavoriteProductAdapter.ViewHolder> {
+        List<Product> data;
+        public FavoriteProductAdapter(List<Product> data) {
+            this.data = data;
+        }
+
+        @NonNull
+        @Override
+        public FavoriteProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card_list, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return 0;
+        }
+
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+            }
+        }
+    }
+
+
 }
