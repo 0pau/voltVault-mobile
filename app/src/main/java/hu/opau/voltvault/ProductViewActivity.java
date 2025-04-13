@@ -2,10 +2,14 @@ package hu.opau.voltvault;
 
 import static android.view.View.GONE;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -16,10 +20,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.AggregateField;
 import com.google.firebase.firestore.AggregateSource;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hu.opau.voltvault.models.Product;
@@ -31,12 +38,19 @@ public class ProductViewActivity extends AppCompatActivity {
     private Product p;
     private int basketQuantity = 1;
     private FirebaseFirestore firestore;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!Utils.isTablet(this)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         setContentView(R.layout.activity_product_view);
         firestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         id = getIntent().getStringExtra("id");
 
         firestore.collection("products").document(id).get().addOnCompleteListener(e->{
@@ -48,6 +62,21 @@ public class ProductViewActivity extends AppCompatActivity {
 
             if (e.isSuccessful()) {
                 p = e.getResult().toObject(Product.class);
+            } else {
+                return;
+            }
+
+            if (auth.getUid() != null) {
+                firestore.collection("userFavorites").document(auth.getUid()).get().addOnCompleteListener(ev->{
+                    if (ev.isSuccessful()) {
+                        List<String> favorites = (List<String>) ev.getResult().get("items");
+                        if (favorites != null) {
+                            if (favorites.contains(p.getId())) {
+                                ((ImageButton)findViewById(R.id.imageButton4)).setImageResource(R.drawable.favorite_fill_24px);
+                            }
+                        }
+                    }
+                });
             }
 
             ((ImageView)findViewById(R.id.imageView4)).setImageBitmap(Utils.convertBase64(p.getImage()));
@@ -78,6 +107,8 @@ public class ProductViewActivity extends AppCompatActivity {
             }
             tl.forceLayout();
         });
+        ((ImageView)findViewById(R.id.imageView4)).startAnimation(AnimationUtils.loadAnimation(this, R.anim.product_appear));
+
     }
 
     public void back(View view) {
@@ -122,6 +153,38 @@ public class ProductViewActivity extends AppCompatActivity {
                 rv.setLayoutManager(new LinearLayoutManager(this));
                 rv.setAdapter(new ReviewAdapter(data));
             }
+        });
+    }
+
+    public void addToFavorites(View v) {
+        if (auth.getUid() == null) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+            return;
+        }
+
+        firestore.collection("userFavorites").document(auth.getUid()).get().addOnCompleteListener(e->{
+           if (e.isSuccessful()) {
+               List<String> favoriteList = (List<String>)e.getResult().get("items");
+               if (favoriteList == null) {
+                   return;
+               }
+               boolean added;
+               if (favoriteList.contains(p.getId())) {
+                   added = false;
+                   favoriteList.remove(p.getId());
+               } else {
+                   favoriteList.add(p.getId());
+                   added = true;
+               }
+               firestore.collection("userFavorites").document(auth.getUid()).update("items", favoriteList).addOnSuccessListener(x->{
+                   if (added) {
+                       ((ImageButton)findViewById(R.id.imageButton4)).setImageResource(R.drawable.favorite_fill_24px);
+                   } else {
+                       ((ImageButton)findViewById(R.id.imageButton4)).setImageResource(R.drawable.favorite_24px);
+                   }
+               });
+           }
         });
     }
 

@@ -8,7 +8,7 @@
     </item>
     <item android:width="50dp" android:height="4dp" android:gravity="center_horizontal" android:top="15dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/disabled_text"/>
+            <solid android:color="?disabledText"/>
             <corners android:radius="100dp"/>
         </shape>
     </item>

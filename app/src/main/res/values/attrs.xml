@@ -8,4 +8,10 @@
     <attr name="borders">#d9d9d9</attr>
     <attr name="ok" />
     <attr name="ok_transparent" />
+    <attr name="brand_secondary">#1C1B1F</attr>
+
+    <declare-styleable name="BottomTabBar">
+        <attr name="tabBarStyle" format="string"/>
+    </declare-styleable>
+
 </resources>

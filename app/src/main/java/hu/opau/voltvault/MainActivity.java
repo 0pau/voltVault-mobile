@@ -3,6 +3,7 @@ package hu.opau.voltvault;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +38,8 @@ import hu.opau.voltvault.views.BottomTabBar;
 public class MainActivity extends AppCompatActivity {
 
     public static MainActivity instance;
+    private int current = 0;
+    private boolean init = false;
 
     private final Fragment[] fragments = {
             new HomeScreen(),
@@ -49,19 +53,48 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!Utils.isTablet(this)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         setContentView(R.layout.activity_main);
         instance = this;
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        getSupportFragmentManager().beginTransaction().add(R.id.content, fragments[0]).commit();
+        //getSupportFragmentManager().beginTransaction().add(R.id.content, fragments[0]).commit();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+            for (int i=0; i<fragments.length; i++) {
+                if (fragments[i].isVisible()) {
+                    current = i;
+                    break;
+                }
+            }
+            ((BottomTabBar)findViewById(R.id.bottomTabBar)).setSelectedIndex(current);
+        });
 
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setOnTabItemSelectedListener(this::changeScreen);
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setMenuResource(R.menu.mainmenu);
     }
 
     private void changeScreen(int index) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, fragments[index]).commit();
+
+        if (!fragments[index].isAdded()) {
+            getSupportFragmentManager().beginTransaction().add(R.id.content, fragments[index]).commit();
+        }
+
+        if (init) {
+            getSupportFragmentManager().beginTransaction().hide(fragments[current]).show(fragments[index]).addToBackStack(null).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().hide(fragments[current]).show(fragments[index]).commit();
+        }
+
+        current = index;
+
+        init = true;
+        //getSupportFragmentManager().beginTransaction().replace(R.id.content, fragments[index]).commit();
     }
 
     public void goToUserScreen(View v) {

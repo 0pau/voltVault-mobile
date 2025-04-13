@@ -2,6 +2,7 @@ package hu.opau.voltvault;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -39,6 +40,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!Utils.isTablet(this)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         setContentView(R.layout.activity_login);
         firebaseAuth = FirebaseAuth.getInstance();
     }
@@ -70,7 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                     template.put("firstName", "TODO");
                     template.put("lastName", "TODO");
                     firestore.collection("userData").document(firebaseAuth.getCurrentUser().getUid()).set(template);
-                    firestore.collection("userFavorites").document(firebaseAuth.getCurrentUser().getUid()).set(new HashMap<>());
+
+                    HashMap<String,Object> favTemplate = new HashMap<>();
+                    favTemplate.put("items", new ArrayList<String>());
+
+                    firestore.collection("userFavorites").document(firebaseAuth.getCurrentUser().getUid()).set(favTemplate);
                     firestore.collection("userBaskets").document(firebaseAuth.getCurrentUser().getUid()).set(new HashMap<>());
                 }
 

@@ -15,6 +15,7 @@
         <item name="ok">@color/ok_light</item>
         <item name="ok_transparent">@color/ok_light_transparent</item>
         <item name="windowBackground">#F0F0F0</item>
+        <item name="brand_secondary">#1C1B1F</item>
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>

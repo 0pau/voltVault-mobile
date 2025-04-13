@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.Theme.VoltVault.Login" parent="Base.Theme.VoltVault">
+        <item name="android:statusBarColor">?windowBackground</item>
+        <item name="android:navigationBarColor">?activeBackground</item>
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+</resources>

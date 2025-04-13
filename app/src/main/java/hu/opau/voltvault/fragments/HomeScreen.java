@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -149,13 +150,15 @@ public class HomeScreen extends Fragment {
             ((TextView)holder.itemView.findViewById(R.id.name)).setText(p.getName());
             ((TextView)holder.itemView.findViewById(R.id.price)).setText(String.format("%,d", p.getPrice()).replace(",", " ")+" Ft");
 
-            holder.itemView.findViewById(R.id.layout).getLayoutParams().width = Resources.getSystem().getDisplayMetrics().widthPixels/2;
+            //holder.itemView.findViewById(R.id.layout).getLayoutParams().width = Resources.getSystem().getDisplayMetrics().widthPixels/2;
 
             holder.itemView.setOnClickListener(v->{
                 Intent i = new Intent(v.getContext(), ProductViewActivity.class);
                 i.putExtra("id", p.getId());
                 v.getContext().startActivity(i);
             });
+
+            holder.itemView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.list_item_appear));
         }
 
         @Override

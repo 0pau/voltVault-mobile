@@ -6,7 +6,7 @@
     <color name="brand_bg">#1C1B1F</color>
     <color name="brand_fg">#FFDD00</color>
     <color name="brand_fg_alt">#D5B100</color>
-    <color name="brand_fg_transparent">#55E8CB0D</color>
+    <color name="brand_fg_transparent">#35E8CB0D</color>
     <color name="disabled_text">#999999</color>
 
     <color name="borders">#d9d9d9</color>

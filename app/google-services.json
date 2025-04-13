@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "384515329726-1cvqj2110b0hndlvk2lp085h7lg2i294.apps.googleusercontent.com",
+          "client_id": "384515329726-lg6o1695itm91ir4omh6rli2cpienvui.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "hu.opau.voltvault",
-            "certificate_hash": "60ef0e803dbdc8473e84e286995c67abd79f2351"
+            "certificate_hash": "bb2ef2e06796dbb8b313f76a66e89350183836d8"
           }
         },
         {
