@@ -45,7 +45,7 @@ public class ProductController {
         return query(limit, page, null);
     }
 
-    public Query query(Integer limit, Integer page, Condition[] query) {
+    public Query query(Integer limit, Integer page, ArrayList<Condition> query) {
 
         var qs = firestore.collection("products");
         Query q = qs.limit(25);
@@ -54,9 +54,9 @@ public class ProductController {
             q = q.limit(limit);
         }
 
-        if (query != null && query.length > 0) {
-            for (int i = 0; i < query.length; i++) {
-                Condition c = query[i];
+        if (query != null && query.size() > 0) {
+            for (int i = 0; i < query.size(); i++) {
+                Condition c = query.get(i);
                 switch (c.operator) {
                     case EQ:
                         q = q.whereEqualTo(c.leftOperand, c.rightOperand);

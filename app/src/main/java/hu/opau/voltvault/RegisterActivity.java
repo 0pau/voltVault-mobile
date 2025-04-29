@@ -33,6 +33,15 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
+            case "light":
+                setTheme(R.style.Base_Theme_VoltVault_Light);
+                break;
+            case "dark":
+                setTheme(R.style.Base_Theme_VoltVault_Dark);
+                break;
+        }
+
         if (!Utils.isTablet(this)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }

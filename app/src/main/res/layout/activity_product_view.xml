@@ -325,7 +325,17 @@
                                     android:id="@+id/reviewRecycler"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:isScrollContainer="false" />
+                                    android:isScrollContainer="false"
+                                    android:nestedScrollingEnabled="false"
+                                    android:overScrollMode="never"
+                                    app:layout_constrainedHeight="true"
+                                    app:layout_constrainedWidth="true" />
+
+                                <LinearLayout
+                                    android:id="@+id/reviewList"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"></LinearLayout>
 
                                 <Button
                                     android:id="@+id/showAllReviewsBtn"

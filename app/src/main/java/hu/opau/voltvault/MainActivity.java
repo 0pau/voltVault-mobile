@@ -3,11 +3,13 @@ package hu.opau.voltvault;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -53,6 +55,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
+            case "light":
+                setTheme(R.style.Base_Theme_VoltVault_Light);
+                break;
+            case "dark":
+                setTheme(R.style.Base_Theme_VoltVault_Dark);
+                break;
+        }
+
+        System.out.println(getPreferences(MODE_PRIVATE).getString("theme", "system"));
 
         if (!Utils.isTablet(this)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -107,6 +120,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void goToSearch(View v) {
+        Intent i = new Intent(this, SearchActivity.class);
+        startActivity(i);
+    }
+
     public void goToLogin(View v) {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
@@ -114,6 +132,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToBillingAddresses(View v) {
         Intent i = new Intent(this, BillingAddressManagerActivity.class);
+        startActivity(i);
+    }
+
+    public void goToDarkThemePage(View v) {
+        Intent i = new Intent(this, DarkThemeActivity.class);
         startActivity(i);
     }
 

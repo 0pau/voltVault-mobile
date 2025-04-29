@@ -14,4 +14,8 @@
         <attr name="tabBarStyle" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="FilterSpinner">
+        <attr name="spinnerTitle" format="string"/>
+    </declare-styleable>
+
 </resources>

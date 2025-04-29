@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -46,6 +47,15 @@ public class ProductViewActivity extends AppCompatActivity {
 
         if (!Utils.isTablet(this)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
+            case "light":
+                setTheme(R.style.Base_Theme_VoltVault_Light);
+                break;
+            case "dark":
+                setTheme(R.style.Base_Theme_VoltVault_Dark);
+                break;
         }
 
         setContentView(R.layout.activity_product_view);
@@ -149,9 +159,29 @@ public class ProductViewActivity extends AppCompatActivity {
             if (!data.isEmpty()) {
                 findViewById(R.id.noReviewsTextView).setVisibility(GONE);
                 findViewById(R.id.reviewLayout).setVisibility(View.VISIBLE);
+                LinearLayout reviewLayout = findViewById(R.id.reviewList);
+
+                for (ProductReview review : data) {
+                    View v = LayoutInflater.from(this).inflate(R.layout.review_card, null);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    lp.bottomMargin = Utils.dpToPxInt(this, 15);
+                    v.setLayoutParams(lp);
+                    if (review.getText() == null || review.getText().isBlank()) {
+                        v.findViewById(R.id.ratingText).setVisibility(GONE);
+                    } else {
+                        ((TextView)v.findViewById(R.id.ratingText)).setText(review.getText());
+                    }
+                    ((TextView)v.findViewById(R.id.name)).setText(review.getName());
+                    ((TextView)v.findViewById(R.id.rating)).setText(review.getValue().toString());
+                    reviewLayout.addView(v);
+                }
+
+
+                /*
                 RecyclerView rv = findViewById(R.id.reviewRecycler);
                 rv.setLayoutManager(new LinearLayoutManager(this));
                 rv.setAdapter(new ReviewAdapter(data));
+                 */
             }
         });
     }

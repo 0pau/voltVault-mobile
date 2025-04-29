@@ -32,9 +32,11 @@ import java.util.List;
 import hu.opau.voltvault.FirestoreBatchExecutor;
 import hu.opau.voltvault.ProductViewActivity;
 import hu.opau.voltvault.R;
+import hu.opau.voltvault.SearchActivity;
 import hu.opau.voltvault.Utils;
 import hu.opau.voltvault.controller.ProductController;
 import hu.opau.voltvault.logic.Condition;
+import hu.opau.voltvault.models.Ad;
 import hu.opau.voltvault.models.Product;
 
 /**
@@ -104,15 +106,28 @@ public class HomeScreen extends Fragment {
 
     public void refresh() {
         FirestoreBatchExecutor executor = new FirestoreBatchExecutor();
-        executor.add(ProductController.getInstance().query(5, 1, new Condition[]{}), e -> {
-            List<Product> data = e.getResult().toObjects(Product.class);
-            LinearLayoutManager lman = new LinearLayoutManager(getContext());
-            lman.setOrientation(LinearLayoutManager.HORIZONTAL);
-            ((RecyclerView)layout.findViewById(R.id.newProductsRecycler)).setLayoutManager(lman);
-            ((RecyclerView)layout.findViewById(R.id.newProductsRecycler)).setAdapter(
-                    new ProductAdapter(data)
-            );
-        }).runBatch(FirestoreBatchExecutor.RunOptions.ABORT_ON_ERROR);
+        executor
+            .add(ProductController.getInstance().query(5, 1, null), e -> {
+                List<Product> data = e.getResult().toObjects(Product.class);
+                LinearLayoutManager lman = new LinearLayoutManager(getContext());
+                lman.setOrientation(LinearLayoutManager.HORIZONTAL);
+                ((RecyclerView)layout.findViewById(R.id.newProductsRecycler)).setLayoutManager(lman);
+                ((RecyclerView)layout.findViewById(R.id.newProductsRecycler)).setAdapter(
+                        new ProductAdapter(data)
+                );
+            })
+            .add(firestore.collection("ads").orderBy("text").limit(1), e -> {
+                Ad adToShow = e.getResult().toObjects(Ad.class).get(0);
+                ((TextView)layout.findViewById(R.id.adTitle)).setText(adToShow.getTitle());
+                ((TextView)layout.findViewById(R.id.adText)).setText(adToShow.getText());
+                layout.findViewById(R.id.currentAdCard).setOnClickListener((v)->{
+                    Intent i = new Intent(this.getContext(), SearchActivity.class);
+                    i.putExtra("adCampaignTitle", adToShow.getTitle());
+                    i.putExtra("adCampaignConditions", adToShow.getConditionsAsArray());
+                    startActivity(i);
+                });
+            })
+            .runBatch(FirestoreBatchExecutor.RunOptions.ABORT_ON_ERROR);
         executor.setOnFirestoreBatchCompleteListener(() -> {
             layout.findViewById(R.id.progressBar3).setVisibility(GONE);
             layout.findViewById(R.id.scrollView2).setVisibility(VISIBLE);

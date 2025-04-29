@@ -51,4 +51,8 @@ public class Utils {
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
+    public static String formatPrice(long value, String currency) {
+        return String.format("%,d", value).replace(",", " ")+" "+currency;
+    }
+
 }
