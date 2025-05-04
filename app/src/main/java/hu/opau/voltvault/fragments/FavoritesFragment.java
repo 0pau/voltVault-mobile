@@ -26,7 +26,9 @@ import hu.opau.voltvault.FirestoreBatchExecutor;
 import hu.opau.voltvault.ProductViewActivity;
 import hu.opau.voltvault.R;
 import hu.opau.voltvault.Utils;
+import hu.opau.voltvault.controller.FavoritesController;
 import hu.opau.voltvault.models.Product;
+import hu.opau.voltvault.views.ProductAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,6 +95,14 @@ public class FavoritesFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && FavoritesController.getInstance().isReloadNeeded()) {
+            checkLoginState();
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         //checkLoginState();
@@ -102,6 +112,7 @@ public class FavoritesFragment extends Fragment {
         int s = View.GONE;
         if (auth.getCurrentUser() == null) {
             s = View.VISIBLE;
+            layout.findViewById(R.id.favoriteList).setVisibility(View.GONE);
         } else {
             loadFavorites();
         }
@@ -110,7 +121,9 @@ public class FavoritesFragment extends Fragment {
 
     private void loadFavorites() {
         layout.findViewById(R.id.progressBar4).setVisibility(View.VISIBLE);
+        layout.findViewById(R.id.favoriteList).setVisibility(View.GONE);
         firestore.collection("userFavorites").document(auth.getUid()).get().addOnCompleteListener(e->{
+            FavoritesController.getInstance().setReloadNeeded(false);
             if (e.isSuccessful()) {
                 List<String> d = (List<String>)  e.getResult().get("items");
                 if (d == null) {
@@ -134,52 +147,13 @@ public class FavoritesFragment extends Fragment {
                 fbe.runBatch(FirestoreBatchExecutor.RunOptions.ABORT_ON_ERROR);
                 fbe.setOnFirestoreBatchCompleteListener(()->{
                     r.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-                    r.setAdapter(new FavoriteProductAdapter(products));
+                    r.setAdapter(new ProductAdapter(products, ProductAdapter.ProductListType.LIST));
                     layout.findViewById(R.id.progressBar4).setVisibility(View.GONE);
+                    layout.findViewById(R.id.favoriteList).setVisibility(View.VISIBLE);
                 });
 
                 //
             }
         });
     }
-
-    public static class FavoriteProductAdapter extends RecyclerView.Adapter<FavoriteProductAdapter.ViewHolder> {
-        List<Product> data;
-        public FavoriteProductAdapter(List<Product> data) {
-            this.data = data;
-        }
-
-        @NonNull
-        @Override
-        public FavoriteProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_card_list, parent, false);
-            return new ViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ((TextView)holder.itemView.findViewById(R.id.name)).setText(data.get(position).getName());
-            ((TextView)holder.itemView.findViewById(R.id.price)).setText(String.format("%,d", data.get(position).getPrice()).replace(",", " ")+" Ft");
-            ((ImageView)holder.itemView.findViewById(R.id.image)).setImageBitmap(Utils.convertBase64(data.get(position).getImage()));
-            holder.itemView.setOnClickListener(e->{
-                Intent i = new Intent(holder.itemView.getContext(), ProductViewActivity.class);
-                i.putExtra("id", data.get(position).getId());
-                holder.itemView.getContext().startActivity(i);
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-            }
-        }
-    }
-
-
 }

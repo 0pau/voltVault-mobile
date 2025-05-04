@@ -22,12 +22,10 @@ public class DarkThemeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        oldTheme = getPreferences(MODE_PRIVATE).getString("theme", "system");
+        oldTheme = getSharedPreferences("user-prefs", MODE_PRIVATE).getString("theme", "system");
         newTheme = oldTheme;
 
-        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
-            case "system":
-                break;
+        switch (oldTheme) {
             case "light":
                 setTheme(R.style.Base_Theme_VoltVault_Light);
                 break;
@@ -36,7 +34,7 @@ public class DarkThemeActivity extends AppCompatActivity {
                 break;
         }
         setContentView(R.layout.activity_dark_theme);
-        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
+        switch (getSharedPreferences("user-prefs", MODE_PRIVATE).getString("theme", "system")) {
             case "system":
                 ((RadioButton)findViewById(R.id.useSystem)).setChecked(true);
                 break;
@@ -58,20 +56,12 @@ public class DarkThemeActivity extends AppCompatActivity {
 
     public void setTheme(String variant) {
         newTheme = variant;
-        getPreferences(MODE_PRIVATE).edit().putString("theme", variant).commit();
-        //recreate();
+        getSharedPreferences("user-prefs", MODE_PRIVATE).edit().putString("theme", variant).apply();
+        recreate();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*
-        if (!oldTheme.equals(newTheme)) {
-            PackageManager pm = getPackageManager();
-            Intent intent = pm.getLaunchIntentForPackage(getPackageName());
-            Intent mainIntent = Intent.makeRestartActivityTask(intent.getComponent());
-            startActivity(mainIntent);
-            Runtime.getRuntime().exit(0);
-        }*/
     }
 }

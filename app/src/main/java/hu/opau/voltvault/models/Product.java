@@ -10,8 +10,10 @@ public class Product {
     private String image; //Base64
     private String manufacturer;
     private String name;
+    private String category;
     private Map<String, Map<String, String>> properties;
     private int price;
+    private int discount = 0;
 
     private Date addDate;
 
@@ -43,5 +45,13 @@ public class Product {
 
     public String getId() {
         return id;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public int getDiscountedPrice() {
+        return (int)Math.floor(getPrice()-getPrice()*((double)getDiscount()/100));
     }
 }

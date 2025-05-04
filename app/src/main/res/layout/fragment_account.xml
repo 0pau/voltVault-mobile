@@ -38,81 +38,49 @@
                     android:text="Előfordulhat, hogy bizonyos funkciók még nem kerültek implementálásra." />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:alpha="0.4"
+                android:text="Felhasználói fiók"
+                android:textStyle="bold" />
+
             <LinearLayout
+                android:id="@+id/notLoggedIn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/card_bg"
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:onClick="goToUserScreen"
-                android:orientation="horizontal">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="10dp"
-                    android:clickable="false"
-                    android:elevation="0dp"
-                    app:cardBackgroundColor="@color/brand_fg_transparent"
-                    app:cardCornerRadius="2000dp"
-                    app:cardElevation="0dp"
-                    app:cardMaxElevation="0dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="28dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/person_24px"
-                            app:tint="?colorAccent" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                android:orientation="horizontal"
+                android:padding="0dp" >
 
                 <LinearLayout
-                    android:id="@+id/notLoggedInText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/list_item"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:onClick="goToUserScreen"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="0"
-                        android:text="Kattintson ide a bejelentkezéshez" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/loginDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                        android:src="@drawable/person_24px"
+                        app:tint="?colorAccent" />
 
                     <TextView
-                        android:id="@+id/userEmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="email"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:text="Fiók kezelése" />
-                </LinearLayout>
+                        android:layout_weight="1"
+                        android:text="Bejelentkezés" />
 
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -124,92 +92,125 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/card_bg"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:alpha="0.4"
-                        android:text="Vásárlással kapcsolatos"
-                        android:textStyle="bold" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="10dp"
+                        android:clickable="false"
+                        android:elevation="0dp"
+                        app:cardBackgroundColor="@color/brand_fg_transparent"
+                        app:cardCornerRadius="2000dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="28dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:srcCompat="@drawable/person_24px"
+                                app:tint="?colorAccent" />
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
 
                     <LinearLayout
+                        android:id="@+id/loginDetails"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/list_card"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/userEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="email"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView3"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/list_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_weight="0"
-                                app:srcCompat="@drawable/package_2_24px"
-                                app:tint="?colorAccent" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0"
-                                android:text="Rendeléseim" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/list_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_weight="0"
-                                app:srcCompat="@drawable/construction_24px"
-                                app:tint="?colorAccent" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0"
-                                android:text="Garancia, jótállás" />
-                        </LinearLayout>
-
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="email" />
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:alpha="0.4"
-                        android:text="Felhasználói fiók"
-                        android:textStyle="bold" />
+                    android:background="@drawable/card_bg"
+                    android:orientation="vertical"
+                    android:padding="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/list_card"
                         android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/list_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:onClick="goToBillingAddresses"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="0"
+                                android:src="@drawable/edit_document_24px"
+                                app:tint="?colorAccent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:text="Személyes adatok szerkesztése" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/list_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:onClick="goToBillingAddresses"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="0"
+                                android:src="@drawable/key_24px"
+                                app:tint="?colorAccent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:text="Jelszó módosítása" />
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -258,9 +259,81 @@
                                 android:layout_weight="0"
                                 android:text="Kijelentkezés" />
                         </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:alpha="0.4"
+                        android:text="Vásárlással kapcsolatos"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/list_card"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/list_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="0"
+                                app:srcCompat="@drawable/package_2_24px"
+                                app:tint="?colorAccent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:text="Rendeléseim" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/list_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="0"
+                                app:srcCompat="@drawable/construction_24px"
+                                app:tint="?colorAccent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:text="Garancia, jótállás" />
+                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout

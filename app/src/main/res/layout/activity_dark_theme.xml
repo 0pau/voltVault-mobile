@@ -49,7 +49,7 @@
         android:padding="@dimen/pagePadding">
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
@@ -64,26 +64,41 @@
                 android:id="@+id/useSystem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:buttonTint="?attr/textColorPrimary"
                 android:padding="10dp"
                 android:tag="system"
-                android:text="Rendszerbeállítás használata" />
+                android:text="Rendszerbeállítás használata"
+                android:textColor="?attr/textColorPrimary" />
 
             <RadioButton
                 android:id="@+id/light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:buttonTint="?attr/textColorPrimary"
                 android:padding="10dp"
                 android:tag="light"
-                android:text="Világos" />
+                android:text="Világos"
+                android:textColor="?attr/textColorPrimary" />
 
             <RadioButton
                 android:id="@+id/dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:buttonTint="?attr/textColorPrimary"
                 android:padding="10dp"
                 android:tag="dark"
-                android:text="Sötét" />
+                android:text="Sötét"
+                android:textColor="?attr/textColorPrimary" />
         </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="Az alkalmazás az új színséma alkalmazásához e képernyő elhagyásával újra fog indulni." />
+
     </LinearLayout>
 
 </LinearLayout>

@@ -51,19 +51,23 @@ public class MainActivity extends AppCompatActivity {
     };
 
     FirebaseAuth firebaseAuth;
+    private String oldTheme = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
+        Utils.checkTheme(this);
+
+        /*
+        switch (getSharedPreferences("user-prefs", MODE_PRIVATE).getString("theme", "system")) {
             case "light":
                 setTheme(R.style.Base_Theme_VoltVault_Light);
                 break;
             case "dark":
                 setTheme(R.style.Base_Theme_VoltVault_Dark);
                 break;
-        }
+        }*/
 
         System.out.println(getPreferences(MODE_PRIVATE).getString("theme", "system"));
 
@@ -78,16 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         //getSupportFragmentManager().beginTransaction().add(R.id.content, fragments[0]).commit();
 
-        getSupportFragmentManager().addOnBackStackChangedListener(() -> {
-            for (int i=0; i<fragments.length; i++) {
-                if (fragments[i].isVisible()) {
-                    current = i;
-                    break;
-                }
-            }
-            ((BottomTabBar)findViewById(R.id.bottomTabBar)).setSelectedIndex(current);
-        });
-
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setOnTabItemSelectedListener(this::changeScreen);
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setMenuResource(R.menu.mainmenu);
     }
@@ -99,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (init) {
-            getSupportFragmentManager().beginTransaction().hide(fragments[current]).show(fragments[index]).addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().hide(fragments[current]).show(fragments[index]).commit();
         } else {
             getSupportFragmentManager().beginTransaction().hide(fragments[current]).show(fragments[index]).commit();
         }
@@ -144,5 +138,21 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth.signOut();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String theme = Utils.checkTheme(this);
+        if (oldTheme == null) {
+            oldTheme = theme;
+        }
+        if (!oldTheme.equals(theme)) {
+            Intent i = getIntent();
+            finish();
+            startActivity(i);
+        }
 
+        getSupportFragmentManager().beginTransaction().hide(fragments[current]).commit();
+        getSupportFragmentManager().beginTransaction().show(fragments[current]).commit();
+
+    }
 }

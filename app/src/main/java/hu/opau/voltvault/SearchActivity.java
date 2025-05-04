@@ -56,6 +56,18 @@ public class SearchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_search);
 
+        if (getIntent().hasExtra("conditions")) {
+            for (String s : getIntent().getStringArrayExtra("conditions")) {
+                conditions.add(Condition.fromString(s));
+            }
+            query("");
+        }
+
+        if (!getIntent().hasExtra("conditions") && !getIntent().hasExtra("adCampaignTitle")) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            findViewById(R.id.queryEditText).requestFocus();
+        }
+
         if (getIntent().hasExtra("adCampaignTitle")) {
             findViewById(R.id.normalSearchUI).setVisibility(GONE);
             findViewById(R.id.adCampaignTitle).setVisibility(VISIBLE);
@@ -64,42 +76,40 @@ public class SearchActivity extends AppCompatActivity {
                 conditions.add(Condition.fromString(s));
             }
             query("");
-        } else {
-            findViewById(R.id.queryEditText).requestFocus();
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-            ((EditText)findViewById(R.id.queryEditText)).addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (s.toString().isEmpty()) {
-                        findViewById(R.id.textCancelBtn).setVisibility(GONE);
-                    } else {
-                        findViewById(R.id.textCancelBtn).setVisibility(VISIBLE);
-                    }
-                }
-            });
-            ((EditText)findViewById(R.id.queryEditText)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        findViewById(R.id.queryEditText).clearFocus();
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(findViewById(R.id.queryEditText).getWindowToken(), 0);
-                        query(((EditText)findViewById(R.id.queryEditText)).getText().toString());
-                    }
-                    return false;
-                }
-            });
         }
+
+        ((EditText)findViewById(R.id.queryEditText)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    findViewById(R.id.textCancelBtn).setVisibility(GONE);
+                } else {
+                    findViewById(R.id.textCancelBtn).setVisibility(VISIBLE);
+                }
+            }
+        });
+        ((EditText)findViewById(R.id.queryEditText)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    findViewById(R.id.queryEditText).clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(findViewById(R.id.queryEditText).getWindowToken(), 0);
+                    query(((EditText)findViewById(R.id.queryEditText)).getText().toString());
+                }
+                return false;
+            }
+        });
 
         ((RecyclerView)findViewById(R.id.result_recycler)).setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
     }
@@ -121,7 +131,7 @@ public class SearchActivity extends AppCompatActivity {
                 .whereLessThanOrEqualTo("lowercase_name",q+"~")
                 .get()
                 .addOnFailureListener(e->{
-                    Toast.makeText(this, "Hiba történt: "+e.getMessage().hashCode(), Toast.LENGTH_SHORT).show();;
+                    throw new RuntimeException(e);
                 })
                 .addOnSuccessListener(e->{
                     List<Product> productList = e.toObjects(Product.class);

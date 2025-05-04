@@ -1,6 +1,7 @@
 package hu.opau.voltvault;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,21 +16,20 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.AggregateField;
 import com.google.firebase.firestore.AggregateSource;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import hu.opau.voltvault.controller.FavoritesController;
 import hu.opau.voltvault.models.Product;
 import hu.opau.voltvault.models.ProductReview;
 
@@ -44,6 +44,8 @@ public class ProductViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Utils.checkTheme(this);
 
         if (!Utils.isTablet(this)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -66,7 +68,7 @@ public class ProductViewActivity extends AppCompatActivity {
         firestore.collection("products").document(id).get().addOnCompleteListener(e->{
 
             findViewById(R.id.progressBar2).setVisibility(GONE);
-            findViewById(R.id.scroller).setVisibility(View.VISIBLE);
+            findViewById(R.id.scroller).setVisibility(VISIBLE);
 
             getReviews();
 
@@ -82,7 +84,7 @@ public class ProductViewActivity extends AppCompatActivity {
                         List<String> favorites = (List<String>) ev.getResult().get("items");
                         if (favorites != null) {
                             if (favorites.contains(p.getId())) {
-                                ((ImageButton)findViewById(R.id.imageButton4)).setImageResource(R.drawable.favorite_fill_24px);
+                                ((ImageButton)findViewById(R.id.favoriteBtn)).setImageResource(R.drawable.favorite_fill_24px);
                             }
                         }
                     }
@@ -92,8 +94,16 @@ public class ProductViewActivity extends AppCompatActivity {
             ((ImageView)findViewById(R.id.imageView4)).setImageBitmap(Utils.convertBase64(p.getImage()));
             ((TextView)findViewById(R.id.productName)).setText(p.getName());
             ((TextView)findViewById(R.id.manufacturer)).setText(p.getManufacturer());
-            ((TextView)findViewById(R.id.productPrice)).setText(String.format("%,d", p.getPrice()).replace(",", " ")+" Ft");
             ((TextView)findViewById(R.id.productDesc)).setText(p.getDescription());
+            int discount = p.getDiscount();
+
+            if (discount != 0) {
+                findViewById(R.id.discount2).setVisibility(VISIBLE);
+                ((TextView)findViewById(R.id.discount2)).setText(String.format("%,d", p.getPrice()).replace(",", " ") + " Ft");
+                ((TextView) findViewById(R.id.productPrice)).setText(String.format("%,d", p.getDiscountedPrice()).replace(",", " ") + " Ft");
+            } else {
+                ((TextView) findViewById(R.id.productPrice)).setText(String.format("%,d", p.getPrice()).replace(",", " ") + " Ft");
+            }
 
             TableLayout tl = findViewById(R.id.specTable);
 
@@ -158,7 +168,7 @@ public class ProductViewActivity extends AppCompatActivity {
 
             if (!data.isEmpty()) {
                 findViewById(R.id.noReviewsTextView).setVisibility(GONE);
-                findViewById(R.id.reviewLayout).setVisibility(View.VISIBLE);
+                findViewById(R.id.reviewLayout).setVisibility(VISIBLE);
                 LinearLayout reviewLayout = findViewById(R.id.reviewList);
 
                 for (ProductReview review : data) {
@@ -209,10 +219,13 @@ public class ProductViewActivity extends AppCompatActivity {
                }
                firestore.collection("userFavorites").document(auth.getUid()).update("items", favoriteList).addOnSuccessListener(x->{
                    if (added) {
-                       ((ImageButton)findViewById(R.id.imageButton4)).setImageResource(R.drawable.favorite_fill_24px);
+                       ((ImageButton)findViewById(R.id.favoriteBtn)).setImageResource(R.drawable.favorite_fill_24px);
+                       findViewById(R.id.favoriteBtn).startAnimation(AnimationUtils.loadAnimation(this, R.anim.favorite));
+                       Toast.makeText(this, "Termék hozzáadva a kedvencekhez", Toast.LENGTH_SHORT).show();
                    } else {
-                       ((ImageButton)findViewById(R.id.imageButton4)).setImageResource(R.drawable.favorite_24px);
+                       ((ImageButton)findViewById(R.id.favoriteBtn)).setImageResource(R.drawable.favorite_24px);
                    }
+                   FavoritesController.getInstance().setReloadNeeded(true);
                });
            }
         });

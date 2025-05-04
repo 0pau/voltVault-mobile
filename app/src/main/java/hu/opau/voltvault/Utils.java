@@ -1,5 +1,7 @@
 package hu.opau.voltvault;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -53,6 +55,19 @@ public class Utils {
 
     public static String formatPrice(long value, String currency) {
         return String.format("%,d", value).replace(",", " ")+" "+currency;
+    }
+
+    public static String checkTheme(Context c) {
+        String theme = c.getSharedPreferences("user-prefs", MODE_PRIVATE).getString("theme", "system");
+        switch (theme) {
+            case "light":
+                c.setTheme(R.style.Base_Theme_VoltVault_Light);
+                break;
+            case "dark":
+                c.setTheme(R.style.Base_Theme_VoltVault_Dark);
+                break;
+        }
+        return theme;
     }
 
 }

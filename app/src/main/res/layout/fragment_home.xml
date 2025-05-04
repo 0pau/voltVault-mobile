@@ -21,20 +21,20 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/pagePadding"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:padding="@dimen/pagePadding">
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/pagePadding">
 
             <LinearLayout
                 android:id="@+id/currentAdCard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/pagePadding"
                 android:background="@drawable/card_bg"
                 android:clickable="true"
                 android:orientation="vertical">
@@ -58,34 +58,56 @@
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="10dp"
-                android:text="Böngéssz webshopunkban!"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:visibility="gone" />
+                android:paddingTop="25dp"
+                android:paddingBottom="15dp"
+                android:text="Böngészés"
+                android:textSize="@dimen/headingSize"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categories_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="15dp"
-                android:visibility="gone" />
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="25dp"
+                android:paddingBottom="15dp"
                 android:text="Új termékeink"
                 android:textSize="@dimen/headingSize"
-                android:textStyle="bold"
-                android:paddingBottom="@dimen/pagePadding"/>
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/newProductsRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="25dp"
+                android:paddingBottom="15dp"
+                android:text="Akciós ajánlatok"
+                android:textSize="@dimen/headingSize"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/discountedProductsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="25dp"
+                android:paddingBottom="15dp"
+                android:text="Márkaajánló"
+                android:textSize="@dimen/headingSize"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>

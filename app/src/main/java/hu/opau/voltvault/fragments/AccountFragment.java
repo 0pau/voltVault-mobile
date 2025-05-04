@@ -95,12 +95,12 @@ public class AccountFragment extends Fragment {
     private void checkLoginState() {
         if (firebaseAuth.getCurrentUser() != null) {
             v.findViewById(R.id.userSpecificSettings).setVisibility(VISIBLE);
-            v.findViewById(R.id.notLoggedInText).setVisibility(GONE);
+            v.findViewById(R.id.notLoggedIn).setVisibility(GONE);
             v.findViewById(R.id.loginDetails).setVisibility(VISIBLE);
             ((TextView)v.findViewById(R.id.userEmail)).setText(firebaseAuth.getCurrentUser().getEmail());
         } else {
             v.findViewById(R.id.userSpecificSettings).setVisibility(GONE);
-            v.findViewById(R.id.notLoggedInText).setVisibility(VISIBLE);
+            v.findViewById(R.id.notLoggedIn).setVisibility(VISIBLE);
             v.findViewById(R.id.loginDetails).setVisibility(GONE);
         }
     }
