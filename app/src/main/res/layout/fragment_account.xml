@@ -363,8 +363,8 @@
                         android:background="@drawable/list_item"
                         android:clickable="true"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:onClick="goToPushSettingPage"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="28dp"
@@ -406,31 +406,17 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/list_item"
-                        android:clickable="true"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/bug_report_24px"
-                            app:tint="?colorAccent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:text="Hibabejelentés" />
-                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.25"
+                android:paddingTop="15dp"
+                android:text="VoltVault mobile v1.0"
+                android:textColor="?textColorPrimary" />
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

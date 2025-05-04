@@ -51,15 +51,6 @@ public class ProductViewActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
-            case "light":
-                setTheme(R.style.Base_Theme_VoltVault_Light);
-                break;
-            case "dark":
-                setTheme(R.style.Base_Theme_VoltVault_Dark);
-                break;
-        }
-
         setContentView(R.layout.activity_product_view);
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();

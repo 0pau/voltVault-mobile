@@ -59,16 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
         Utils.checkTheme(this);
 
-        /*
-        switch (getSharedPreferences("user-prefs", MODE_PRIVATE).getString("theme", "system")) {
-            case "light":
-                setTheme(R.style.Base_Theme_VoltVault_Light);
-                break;
-            case "dark":
-                setTheme(R.style.Base_Theme_VoltVault_Dark);
-                break;
-        }*/
-
         System.out.println(getPreferences(MODE_PRIVATE).getString("theme", "system"));
 
         if (!Utils.isTablet(this)) {
@@ -79,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
         instance = this;
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        //getSupportFragmentManager().beginTransaction().add(R.id.content, fragments[0]).commit();
 
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setOnTabItemSelectedListener(this::changeScreen);
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setMenuResource(R.menu.mainmenu);
@@ -101,17 +89,10 @@ public class MainActivity extends AppCompatActivity {
         current = index;
 
         init = true;
-        //getSupportFragmentManager().beginTransaction().replace(R.id.content, fragments[index]).commit();
     }
 
     public void goToUserScreen(View v) {
-
-        if (firebaseAuth.getCurrentUser() == null) {
-            goToLogin(v);
-        } else {
-            //
-        }
-
+        goToLogin(v);
     }
 
     public void goToSearch(View v) {
@@ -131,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToDarkThemePage(View v) {
         Intent i = new Intent(this, DarkThemeActivity.class);
+        startActivity(i);
+    }
+
+    public void goToPushSettingPage(View v) {
+        Intent i = new Intent(this, PushNotificationSettingActivity.class);
         startActivity(i);
     }
 

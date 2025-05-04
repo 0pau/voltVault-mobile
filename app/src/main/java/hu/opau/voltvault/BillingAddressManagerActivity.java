@@ -41,6 +41,9 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Utils.checkTheme(this);
+
         setContentView(R.layout.activity_billing_address_manager);
 
         adapter = new BillingAddressAdapter();

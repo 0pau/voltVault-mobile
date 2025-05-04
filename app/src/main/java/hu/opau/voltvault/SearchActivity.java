@@ -30,11 +30,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import hu.opau.voltvault.adapters.ProductListAdapter;
 import hu.opau.voltvault.controller.ProductController;
 import hu.opau.voltvault.logic.Condition;
 import hu.opau.voltvault.models.Product;
 import hu.opau.voltvault.views.FilterSpinner;
+import hu.opau.voltvault.views.ProductAdapter;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -45,14 +45,7 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        switch (getPreferences(MODE_PRIVATE).getString("theme", "system")) {
-            case "light":
-                setTheme(R.style.Base_Theme_VoltVault_Light);
-                break;
-            case "dark":
-                setTheme(R.style.Base_Theme_VoltVault_Dark);
-                break;
-        }
+        Utils.checkTheme(this);
 
         setContentView(R.layout.activity_search);
 
@@ -136,7 +129,7 @@ public class SearchActivity extends AppCompatActivity {
                 .addOnSuccessListener(e->{
                     List<Product> productList = e.toObjects(Product.class);
                     System.out.println(productList.size());
-                    ((RecyclerView)findViewById(R.id.result_recycler)).setAdapter(new ProductListAdapter(productList));
+                    ((RecyclerView)findViewById(R.id.result_recycler)).setAdapter(new ProductAdapter(productList, ProductAdapter.ProductListType.LIST));
                     findViewById(R.id.search_layout).setVisibility(VISIBLE);
                     findViewById(R.id.progressBar5).setVisibility(GONE);
                 });
