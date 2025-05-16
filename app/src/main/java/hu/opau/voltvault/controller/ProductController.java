@@ -1,26 +1,18 @@
 package hu.opau.voltvault.controller;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import hu.opau.voltvault.logic.Condition;
-import hu.opau.voltvault.models.Product;
 
 public class ProductController {
 
     private static ProductController productController;
     private FirebaseFirestore firestore;
-
-    private ExecutorService executor
-            = Executors.newSingleThreadExecutor();
 
     private ProductController() {
         firestore = FirebaseFirestore.getInstance();
@@ -31,6 +23,10 @@ public class ProductController {
             productController = new ProductController();
         }
         return productController;
+    }
+
+    public Task<DocumentSnapshot> getProductById(String id) {
+        return firestore.collection("products").document(id).get();
     }
 
     public Query query() {

@@ -62,7 +62,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         byte[] decodedString = Base64.decode(p.getImage().replace("data:image/png;base64,", ""), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-        if (listType == ProductListType.COLUMNS && position != data.size()-1) {
+        if (listType== ProductListType.COLUMNS && position != data.size()-1) {
             ((RecyclerView.LayoutParams) holder.itemView.getLayoutParams()).setMarginEnd(Utils.dpToPxInt(holder.itemView.getContext(), 15));
         }
 

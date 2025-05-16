@@ -17,27 +17,6 @@
             android:orientation="vertical"
             android:padding="@dimen/pagePadding">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="15dp"
-                android:background="@drawable/card_bg"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Az alkalmazás jelenleg bétaverzióban fut."
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Előfordulhat, hogy bizonyos funkciók még nem kerültek implementálásra." />
-            </LinearLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,6 +73,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/card_bg"
+                    android:clickable="false"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="15dp">
@@ -142,12 +122,6 @@
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/textView3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:text="email" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -163,54 +137,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/list_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical"
-                            android:onClick="goToBillingAddresses"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_weight="0"
-                                android:src="@drawable/edit_document_24px"
-                                app:tint="?colorAccent" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0"
-                                android:text="Személyes adatok szerkesztése" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/list_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical"
-                            android:onClick="goToBillingAddresses"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="28dp"
-                                android:layout_height="28dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_weight="0"
-                                android:src="@drawable/key_24px"
-                                app:tint="?colorAccent" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0"
-                                android:text="Jelszó módosítása" />
-                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -356,30 +282,6 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/list_card"
                     android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/list_item"
-                        android:clickable="true"
-                        android:gravity="center_vertical"
-                        android:onClick="goToPushSettingPage"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="0"
-                            app:srcCompat="@drawable/notifications_active_24px"
-                            app:tint="?colorAccent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:text="Push értesítések" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"

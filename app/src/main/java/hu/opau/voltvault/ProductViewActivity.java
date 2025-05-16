@@ -29,15 +29,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
+import hu.opau.voltvault.controller.BasketController;
 import hu.opau.voltvault.controller.FavoritesController;
 import hu.opau.voltvault.models.Product;
 import hu.opau.voltvault.models.ProductReview;
+import hu.opau.voltvault.models.UserBasketItem;
 
 public class ProductViewActivity extends AppCompatActivity {
 
     private String id;
     private Product p;
     private int basketQuantity = 1;
+    private int realPrice = 0;
     private FirebaseFirestore firestore;
     private FirebaseAuth auth;
 
@@ -124,6 +127,15 @@ public class ProductViewActivity extends AppCompatActivity {
 
     public void back(View view) {
         finish();
+    }
+
+    public void addToBasket(View v) {
+        int price = p.getPrice();
+        if (p.getDiscount() != 0) {
+            price = p.getDiscountedPrice();
+        }
+        BasketController.getInstance().addItem(new UserBasketItem(id, price, basketQuantity));
+        Toast.makeText(this, "A terméket hozzáadtuk a kosárhoz.", Toast.LENGTH_SHORT).show();
     }
 
     public void incrementQuantity(View v) {

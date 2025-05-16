@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -13,8 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VoltVault">
         <activity
-            android:name=".PushNotificationSettingActivity"
+            android:name=".OrderSuccess"
+            android:theme="@style/Base.Theme.VoltVault.ProductView"
             android:exported="false" />
+        <activity
+            android:name=".PlaceOrderActivity"
+            android:exported="false"
+            android:theme="@style/Base.Theme.VoltVault.ProductView" />
         <activity
             android:name=".DarkThemeActivity"
             android:exported="false" />
@@ -46,6 +54,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".BasketReminderJob"
+            android:permission="android.permission.BIND_JOB_SERVICE"></service>
     </application>
 
 </manifest>

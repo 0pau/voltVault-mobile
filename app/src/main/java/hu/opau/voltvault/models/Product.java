@@ -54,4 +54,8 @@ public class Product {
     public int getDiscountedPrice() {
         return (int)Math.floor(getPrice()-getPrice()*((double)getDiscount()/100));
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

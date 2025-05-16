@@ -1,10 +1,18 @@
 package hu.opau.voltvault;
 
+import android.Manifest;
 import android.app.ActionBar;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +23,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,10 +34,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import hu.opau.voltvault.controller.BasketController;
 import hu.opau.voltvault.controller.ProductController;
 import hu.opau.voltvault.fragments.AccountFragment;
 import hu.opau.voltvault.fragments.BasketFragment;
@@ -56,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Utils.checkTheme(this);
-
         System.out.println(getPreferences(MODE_PRIVATE).getString("theme", "system"));
 
         if (!Utils.isTablet(this)) {
@@ -72,6 +81,19 @@ public class MainActivity extends AppCompatActivity {
 
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setOnTabItemSelectedListener(this::changeScreen);
         ((BottomTabBar)findViewById(R.id.bottomTabBar)).setMenuResource(R.menu.mainmenu);
+
+        if (getIntent().hasExtra("screen")) {
+            int screen = getIntent().getIntExtra("screen",0);
+            ((BottomTabBar)findViewById(R.id.bottomTabBar)).setSelectedIndex(screen);
+            changeScreen(screen);
+        }
+
+        BasketController.getInstance().refreshBasketFromDatabase();
+        new NotificationHandler(this).cancel();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 91);
+        }
     }
 
     private void changeScreen(int index) {
@@ -115,13 +137,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void goToPushSettingPage(View v) {
-        Intent i = new Intent(this, PushNotificationSettingActivity.class);
-        startActivity(i);
-    }
-
     public void logout(View v) {
         firebaseAuth.signOut();
+    }
+
+    public void goToPlaceOrder(View v) {
+        Intent i = new Intent(this, PlaceOrderActivity.class);
+        startActivity(i);
     }
 
     @Override
@@ -140,5 +162,23 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().hide(fragments[current]).commit();
         getSupportFragmentManager().beginTransaction().show(fragments[current]).commit();
 
+    }
+
+    void setJobScheduler() {
+        JobScheduler scheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+
+        ComponentName componentName = new ComponentName(getPackageName(), BasketReminderJob.class.getName());
+        JobInfo.Builder builder = new JobInfo.Builder(0, componentName)
+                .setOverrideDeadline(4000);
+        scheduler.schedule(builder.build());
+        BasketController.getInstance().setViewRefreshNeeded(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (!BasketController.getInstance().getBasketItems().isEmpty()) {
+            setJobScheduler();
+        }
+        super.onDestroy();
     }
 }

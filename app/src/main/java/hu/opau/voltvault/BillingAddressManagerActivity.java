@@ -3,6 +3,10 @@ package hu.opau.voltvault;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +16,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +43,7 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
     BillingAddressAdapter adapter;
     private boolean loadingDone = false;
     private boolean listModified = false;
+    private BillingAddressEditorSheet editorSheet = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +57,19 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
         ((RecyclerView)findViewById(R.id.content)).setLayoutManager(new LinearLayoutManager(this));
         ((RecyclerView)findViewById(R.id.content)).setAdapter(adapter);
         adapter.setOnItemSelectedListener(index->{
-            showEditSheet(adapter.data.get(index), false);
+            if (!getIntent().getBooleanExtra("selector", false)) {
+                showEditSheet(adapter.data.get(index), false);
+            } else {
+                Intent i = new Intent();
+                BillingAddress item = adapter.data.get(index);
+                i.putExtra("addressInfo", new String[]{
+                   item.getName(),
+                   item.getPhone(),
+                        Integer.toString(item.getPostalCode()),item.getCountry(),item.getCity(),item.getAddress()
+                });
+                setResult(999, i);
+                finish();
+            }
         });
         adapter.setOnItemRemovedListener(()->{
             listModified = true;
@@ -79,34 +98,20 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
     }
 
     public void showEditSheet(BillingAddress address, boolean isNewItem) {
-        BottomSheetDialogWithResult bsd = new BottomSheetDialogWithResult(this, R.style.Base_Theme_VoltVault_BottomSheet);
-        bsd.setContentView(R.layout.billing_address_editor);
+        editorSheet = new BillingAddressEditorSheet(this, address);
+        editorSheet.setOnDismissListener(e->{
 
-        ((EditText)bsd.findViewById(R.id.fullName)).setText(address.getName());
-        ((EditText)bsd.findViewById(R.id.phone)).setText(address.getPhone());
-        ((EditText)bsd.findViewById(R.id.country)).setText(address.getCountry());
-        ((EditText)bsd.findViewById(R.id.postalCode)).setText(Integer.toString(address.getPostalCode()));
-        ((EditText)bsd.findViewById(R.id.city)).setText(address.getCity());
-        ((EditText)bsd.findViewById(R.id.address)).setText(address.getAddress());
-        ((CheckBox)bsd.findViewById(R.id.setAsPrimary)).setChecked(address.isPrimary());
-
-        bsd.findViewById(R.id.saveBtn).setOnClickListener(l ->{
-            bsd.closeWithResult(true);
-        });
-
-        bsd.setOnDismissListener(e->{
-
-            if (!bsd.hasResult) {
+            if (!editorSheet.hasResult) {
                 return;
             }
 
-            String fullName = ((EditText)bsd.findViewById(R.id.fullName)).getText().toString();
-            String phone = ((EditText)bsd.findViewById(R.id.phone)).getText().toString();
-            String country = ((EditText)bsd.findViewById(R.id.country)).getText().toString();
-            int postalCode = Integer.parseInt(((EditText)bsd.findViewById(R.id.postalCode)).getText().toString());
-            String city = ((EditText)bsd.findViewById(R.id.city)).getText().toString();
-            String addr = ((EditText)bsd.findViewById(R.id.address)).getText().toString();
-            boolean isPrimary = ((CheckBox)bsd.findViewById(R.id.setAsPrimary)).isChecked();
+            String fullName = ((EditText)editorSheet.findViewById(R.id.fullName)).getText().toString();
+            String phone = ((EditText)editorSheet.findViewById(R.id.phone)).getText().toString();
+            String country = ((EditText)editorSheet.findViewById(R.id.country)).getText().toString();
+            int postalCode = Integer.parseInt(((EditText)editorSheet.findViewById(R.id.postalCode)).getText().toString());
+            String city = ((EditText)editorSheet.findViewById(R.id.city)).getText().toString();
+            String addr = ((EditText)editorSheet.findViewById(R.id.address)).getText().toString();
+            boolean isPrimary = ((CheckBox)editorSheet.findViewById(R.id.setAsPrimary)).isChecked();
 
             if (fullName.isEmpty()||phone.isEmpty()||country.isEmpty()||postalCode==0||city.isEmpty()||addr.isEmpty()) {
                 //TODO: Show warning!
@@ -136,8 +141,7 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
                 }
             }
         });
-
-        bsd.show();
+        editorSheet.show();
     }
 
     public void showAddSheet(View v) {
@@ -244,6 +248,15 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
 
         public void setOnItemRemovedListener(OnItemRemovedListener onItemRemovedListener) {
             this.onItemRemovedListener = onItemRemovedListener;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, int deviceId) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults, deviceId);
+
+        if (requestCode == 444 && grantResults[0]==0) {
+            editorSheet.getLocation();
         }
     }
 }

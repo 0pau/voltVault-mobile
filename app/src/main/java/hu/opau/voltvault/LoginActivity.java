@@ -32,6 +32,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hu.opau.voltvault.controller.BasketController;
+
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
@@ -83,6 +85,8 @@ public class LoginActivity extends AppCompatActivity {
                     firestore.collection("userFavorites").document(firebaseAuth.getCurrentUser().getUid()).set(favTemplate);
                     firestore.collection("userBaskets").document(firebaseAuth.getCurrentUser().getUid()).set(new HashMap<>());
                 }
+
+                BasketController.getInstance().refreshBasketFromDatabase();
 
                 finish();
             } else {

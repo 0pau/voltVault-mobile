@@ -83,17 +83,6 @@
                 android:visibility="gone"
                 app:srcCompat="@drawable/close_24px" />
 
-            <ImageButton
-                android:id="@+id/tuneSearchBtn"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_weight="0"
-                android:foreground="@drawable/ripple_effect"
-                android:tint="?textColorPrimary"
-                android:tooltipText="Keresés"
-                android:visibility="visible"
-                app:srcCompat="@drawable/tune_24px" />
         </LinearLayout>
 
     </LinearLayout>

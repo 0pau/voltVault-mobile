@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="destructive">#AA2200</color>
+    <color name="success">#00AA66</color>
 
     <color name="brand_bg">#1C1B1F</color>
     <color name="brand_fg">#FFDD00</color>

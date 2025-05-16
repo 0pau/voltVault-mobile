@@ -1,6 +1,7 @@
 package hu.opau.voltvault;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,12 +9,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class PushNotificationSettingActivity extends AppCompatActivity {
+public class OrderSuccess extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.checkTheme(this);
-        setContentView(R.layout.activity_push_notification_setting);
+        setContentView(R.layout.activity_order_success);
+    }
+
+    public void back(View v) {
+        finish();
     }
 }

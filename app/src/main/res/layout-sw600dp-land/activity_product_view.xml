@@ -234,6 +234,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="15dp"
                                     android:layout_weight="0"
+                                    android:onClick="addToBasket"
                                     android:text="Kosárba" />
 
                             </LinearLayout>
