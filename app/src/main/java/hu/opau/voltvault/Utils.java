@@ -61,13 +61,29 @@ public class Utils {
         String theme = c.getSharedPreferences("user-prefs", MODE_PRIVATE).getString("theme", "system");
         switch (theme) {
             case "light":
+                c.getApplicationContext().setTheme(R.style.Base_Theme_VoltVault_Light);
                 c.setTheme(R.style.Base_Theme_VoltVault_Light);
                 break;
             case "dark":
+                c.getApplicationContext().setTheme(R.style.Base_Theme_VoltVault_Dark);
                 c.setTheme(R.style.Base_Theme_VoltVault_Dark);
                 break;
         }
         return theme;
+    }
+
+    public static int getPreferredBottomSheetTheme(Context c) {
+        String theme = c.getSharedPreferences("user-prefs", MODE_PRIVATE).getString("theme", "system");
+        switch (theme) {
+            case "light":
+                System.out.println("Light");
+                return R.style.Base_Theme_VoltVault_BottomSheet_Light;
+            case "dark":
+                System.out.println("Dark");
+                return R.style.Base_Theme_VoltVault_BottomSheet_Dark;
+        }
+        System.out.println("System");
+        return R.style.Base_Theme_VoltVault_BottomSheet;
     }
 
 }

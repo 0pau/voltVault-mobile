@@ -55,7 +55,9 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="Base.Theme.VoltVault.BottomSheet" parent="Theme.Material3.Light.BottomSheetDialog">
+    <style name="Base.Theme.VoltVault.BottomSheet" parent="Base.Theme.VoltVault.Light"/>
+
+    <style name="Base.Theme.VoltVault.BottomSheet.Light" parent="Theme.Material3.Light.BottomSheetDialog">
         <item name="android:navigationBarColor">#F0F0F0</item>
         <item name="colorAccent">@color/brand_fg_alt</item>
         <item name="windowBackground">#F0F0F0</item>

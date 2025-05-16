@@ -3,7 +3,9 @@
     <style name="Base.Theme.VoltVault" parent="Base.Theme.VoltVault.Dark">
     </style>
 
-    <style name="Base.Theme.VoltVault.BottomSheet" parent="Theme.Material3.Light.BottomSheetDialog">
+    <style name="Base.Theme.VoltVault.BottomSheet" parent="Base.Theme.VoltVault.BottomSheet.Dark"/>
+
+    <style name="Base.Theme.VoltVault.BottomSheet.Dark" parent="Theme.Material3.Dark.BottomSheetDialog">
         <item name="android:navigationBarColor">#111111</item>
         <item name="colorAccent">@color/brand_fg_alt</item>
         <item name="windowBackground">#191919</item>

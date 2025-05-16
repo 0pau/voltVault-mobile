@@ -130,6 +130,13 @@ public class ProductViewActivity extends AppCompatActivity {
     }
 
     public void addToBasket(View v) {
+
+        if (auth.getUid() == null) {
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+            return;
+        }
+
         int price = p.getPrice();
         if (p.getDiscount() != 0) {
             price = p.getDiscountedPrice();

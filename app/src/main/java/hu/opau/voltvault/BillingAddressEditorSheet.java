@@ -1,7 +1,5 @@
 package hu.opau.voltvault;
 
-import static androidx.core.app.ActivityCompat.requestPermissions;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 import androidx.core.app.ActivityCompat;
 
@@ -33,7 +30,7 @@ public class BillingAddressEditorSheet extends BottomSheetDialogWithResult {
     private Activity parent;
 
     public BillingAddressEditorSheet(Activity parent, BillingAddress address) {
-        super(parent, R.style.Base_Theme_VoltVault_BottomSheet);
+        super(parent, Utils.getPreferredBottomSheetTheme(parent));
         this.parent = parent;
         setContentView(R.layout.billing_address_editor);
 
