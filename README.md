@@ -10,7 +10,7 @@ Segítség az értékeléshez:
 
 - A permission kezelés a Fiókom > Szállítási címek kezelése menüben látható, ha hozzáadni vagy szerkeszteni szeretnél szállítási címeket, az automatikus kitöltés az eszköz adatait használja erre.
 
-- Az értesítés és háttérszolgáltatás csak akkor működik, ha be vagy jelentkezve és van a kosaradban legalább egy elem.
+- Az értesítés és háttérszolgáltatás csak akkor működik, ha be vagy jelentkezve és van a kosaradban legalább egy elem és kilépsz az alkalmazásból.
 
 - Lifecycle Hook-ok: onResume és onDestroy a MainActivity-ben.
 
