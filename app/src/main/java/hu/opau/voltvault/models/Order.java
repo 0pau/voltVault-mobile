@@ -10,6 +10,9 @@ public class Order {
     private int status = 0;
     private BillingAddress billingAddress;
     private Date date = new Date();
+    private String id = "";
+
+    public Order() {}
 
     public Order(String user, int price, List<UserBasketItem> items, BillingAddress billingAddress) {
         this.user = user;
@@ -40,5 +43,13 @@ public class Order {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

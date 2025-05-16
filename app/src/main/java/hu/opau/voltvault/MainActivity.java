@@ -146,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void goToMyOrders(View v) {
+        Intent i = new Intent(this, MyOrdersActivity.class);
+        startActivity(i);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

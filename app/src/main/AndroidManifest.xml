@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:allowBackup="true"
@@ -16,9 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VoltVault">
         <activity
-            android:name=".OrderSuccess"
-            android:theme="@style/Base.Theme.VoltVault.ProductView"
+            android:name=".MyOrdersActivity"
             android:exported="false" />
+        <activity
+            android:name=".OrderSuccess"
+            android:exported="false"
+            android:theme="@style/Base.Theme.VoltVault.ProductView" />
         <activity
             android:name=".PlaceOrderActivity"
             android:exported="false"
@@ -57,7 +63,7 @@
 
         <service
             android:name=".BasketReminderJob"
-            android:permission="android.permission.BIND_JOB_SERVICE"></service>
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

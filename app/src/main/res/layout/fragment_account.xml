@@ -216,6 +216,7 @@
                             android:background="@drawable/list_item"
                             android:clickable="true"
                             android:gravity="center_vertical"
+                            android:onClick="goToMyOrders"
                             android:orientation="horizontal">
 
                             <ImageView

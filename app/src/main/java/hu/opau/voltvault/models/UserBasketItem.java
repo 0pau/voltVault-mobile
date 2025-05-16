@@ -6,6 +6,8 @@ public class UserBasketItem {
     private int price;
     private int quantity;
 
+    public UserBasketItem() {}
+
     public UserBasketItem(String id, int price, int quantity) {
         this.id = id;
         this.price = price;

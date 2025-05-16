@@ -1,5 +1,6 @@
 package hu.opau.voltvault;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,6 +19,8 @@ public class OrderSuccess extends AppCompatActivity {
     }
 
     public void back(View v) {
+        Intent i = new Intent(this, MyOrdersActivity.class);
+        startActivity(i);
         finish();
     }
 }

@@ -3,13 +3,17 @@ package hu.opau.voltvault;
 import static androidx.core.app.ActivityCompat.requestPermissions;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,12 +37,33 @@ public class BillingAddressEditorSheet extends BottomSheetDialogWithResult {
         this.parent = parent;
         setContentView(R.layout.billing_address_editor);
 
-        findViewById(R.id.find_location_btn).setOnClickListener(l->{
+        findViewById(R.id.autoFillBtn).setOnClickListener(l->{
+
+            ArrayList<String> missingPermissions = new ArrayList<>();
+
             if (ActivityCompat.checkSelfPermission(parent, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                parent.requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 444);
+                missingPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
             } else {
                 getLocation();
             }
+            if (ActivityCompat.checkSelfPermission(parent, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(Manifest.permission.READ_CONTACTS);
+            } else {
+                getOwner();
+            }
+            if (ActivityCompat.checkSelfPermission(parent, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(parent, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(Manifest.permission.READ_PHONE_STATE);
+                missingPermissions.add(Manifest.permission.READ_PHONE_NUMBERS);
+            } else {
+                getPhoneNumber();
+            }
+
+            if (missingPermissions.size() != 0) {
+                String[] arr = new String[missingPermissions.size()];
+                arr = missingPermissions.toArray(arr);
+                parent.requestPermissions(arr, 444);
+            }
+
         });
 
         ((EditText)findViewById(R.id.fullName)).setText(address.getName());
@@ -54,6 +79,19 @@ public class BillingAddressEditorSheet extends BottomSheetDialogWithResult {
         });
     }
 
+    @SuppressLint("Range")
+    public void getOwner() {
+        Cursor c = getContext().getApplicationContext().getContentResolver().query(ContactsContract.Profile.CONTENT_URI, null, null, null, null);
+        c.moveToFirst();
+        ((EditText)findViewById(R.id.fullName)).setText(c.getString(c.getColumnIndex("display_name")));
+        c.close();
+    }
+
+    public void getPhoneNumber() {
+        TelephonyManager tMgr = (TelephonyManager)getContext().getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        @SuppressLint("MissingPermission") String mPhoneNumber = tMgr.getLine1Number();
+        ((EditText)findViewById(R.id.phone)).setText(mPhoneNumber);
+    }
 
     @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void getLocation() {

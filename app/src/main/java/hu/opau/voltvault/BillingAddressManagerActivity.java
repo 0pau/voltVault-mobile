@@ -4,6 +4,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import hu.opau.voltvault.models.BillingAddress;
 import hu.opau.voltvault.models.UserData;
@@ -251,12 +253,25 @@ public class BillingAddressManagerActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, int deviceId) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults, deviceId);
 
-        if (requestCode == 444 && grantResults[0]==0) {
-            editorSheet.getLocation();
+        if (requestCode != 444) {
+            return;
+        }
+
+        for (int i = 0; i < permissions.length; i++) {
+            if (Objects.equals(permissions[i], Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[i] == 0) {
+                editorSheet.getLocation();
+            }
+            if (Objects.equals(permissions[i], Manifest.permission.READ_CONTACTS) && grantResults[i] == 0) {
+                editorSheet.getOwner();
+            }
+            if (Objects.equals(permissions[i], Manifest.permission.READ_PHONE_NUMBERS) && grantResults[i] == 0) {
+                editorSheet.getPhoneNumber();
+            }
         }
     }
 }
