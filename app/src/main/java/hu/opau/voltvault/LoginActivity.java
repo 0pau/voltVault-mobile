@@ -83,7 +83,10 @@ public class LoginActivity extends AppCompatActivity {
                     favTemplate.put("items", new ArrayList<String>());
 
                     firestore.collection("userFavorites").document(firebaseAuth.getCurrentUser().getUid()).set(favTemplate);
-                    firestore.collection("userBaskets").document(firebaseAuth.getCurrentUser().getUid()).set(new HashMap<>());
+
+                    firestore.collection("userBaskets").document(firebaseAuth.getCurrentUser().getUid()).set(favTemplate).addOnSuccessListener(e->{
+                        BasketController.getInstance().refreshBasketFromDatabase();
+                    });
                 }
 
                 BasketController.getInstance().refreshBasketFromDatabase();
